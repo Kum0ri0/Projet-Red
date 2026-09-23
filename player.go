@@ -1,27 +1,71 @@
 package main
 
+import "fmt"
+
+type Spell struct {
+	Name   string
+	Damage int
+}
+
+var Punch = Spell{
+	Name:   "Coup de poing",
+	Damage: 8,
+}
+
+var Fireball = Spell{
+	Name:   "Boule de Feu",
+	Damage: 18,
+}
+
 type Player struct {
-	Name      string
-	Class     string
-	HP        int
-	MaxHP     int
-	Level     int
-	XP        int
-	Gold      int
+	Name   string
+	Class  string
+	HP     int
+	MaxHP  int
+	Level  int
+	XP     int
+	Gold   int
+	Spells []Spell
 	Inventory Inventory
 }
 
-// CreatePlayer crée un nouveau personnage avec les valeurs de départ.
+// CreatePlayer crée un nouveau personnage avec Coup de poing.
 func CreatePlayer(name string, class string) Player {
 	return Player{
-		Name:  name,
-		Class: class,
-		HP:    100,
-		MaxHP: 100,
-		Level: 1,
-		XP:    0,
-		Gold:  0,
+		Name:   name,
+		Class:  class,
+		HP:     100,
+		MaxHP:  100,
+		Level:  1,
+		XP:     0,
+		Gold:   0,
+		Spells: []Spell{Punch},
 	}
+}
+
+// SpellBook ajoute Boule de Feu au livre de sorts si elle n'est pas déjà connue.
+func (p *Player) SpellBook() {
+	for _, spell := range p.Spells {
+		if spell.Name == Fireball.Name {
+			return
+		}
+	}
+
+	p.Spells = append(p.Spells, Fireball)
+}
+
+// Display affiche les informations du joueur.
+func (p Player) Display() {
+	fmt.Println("╔══════════════════════════════╗")
+	fmt.Println("║          PERSONNAGE          ║")
+	fmt.Println("╠══════════════════════════════╣")
+	fmt.Printf("║ Nom      : %-18s ║\n", p.Name)
+	fmt.Printf("║ Classe   : %-18s ║\n", p.Class)
+	fmt.Printf("║ PV       : %-18s ║\n", fmt.Sprintf("%d / %d", p.HP, p.MaxHP))
+	fmt.Printf("║ Niveau   : %-18d ║\n", p.Level)
+	fmt.Printf("║ XP       : %-18d ║\n", p.XP)
+	fmt.Printf("║ Or       : %-18d ║\n", p.Gold)
+	fmt.Println("╚══════════════════════════════╝")
 }
 
 // TakeDamage retire des PV au joueur.
@@ -53,7 +97,7 @@ func (p *Player) GainXP(amount int) {
 }
 
 // XPToNextLevel retourne l'XP nécessaire pour passer au niveau suivant.
-func (p *Player) XPToNextLevel() int {
+func (p Player) XPToNextLevel() int {
 	return p.Level * 100
 }
 
@@ -78,4 +122,3 @@ func (p *Player) RemoveGold(amount int) bool {
 	p.Gold -= amount
 	return true
 }
-

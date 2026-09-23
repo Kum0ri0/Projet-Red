@@ -34,12 +34,9 @@ func monsterAttack(m Monster, p *Player, tour int) {
 	}
 }
 
-	
 func ChooseSpell(m *Monster, p *Player) bool {
-	spells := sortsDuJoueur()
-
-	for i, s := range spells {
-		fmt.Printf("[%d] %s (%d dégâts)\n", i+1, s.nom, s.degats)
+	for i, s := range p.Spells {
+		fmt.Printf("[%d] %s (%d dégâts)\n", i+1, s.Name, s.Damage)
 	}
 	fmt.Println("[0] Retour")
  
@@ -49,17 +46,17 @@ func ChooseSpell(m *Monster, p *Player) bool {
 	if choix == 0 {
 		return false
 	}
-	if choix < 1 || choix > len(spells) {
+	if choix < 1 || choix > len(p.Spells) {
 		fmt.Println("Ce choix n'existe pas")
 		return false
 	}
  
-	spell := spells[choix-1]
+	spell := p.Spells[choix-1]
  
-	damageMonster(m, spell.degats)
+	damageMonster(m, spell.Damage)
  
 	fmt.Println()
-	fmt.Println(p.Name, "lance", spell.nom, "et inflige", spell.degats, "dégâts au", m.nom)
+	fmt.Println(p.Name, "lance", spell.Name, "et inflige", spell.Damage, "dégâts au", m.nom)
 	fmt.Println()
  
 	return true
@@ -190,8 +187,26 @@ func useInventory(p *Player) bool {
 	}
  
 	item := p.Inventory.Items[choix-1]
-	fmt.Println("Tu utilises", item.Name)
-	p.Inventory.UseItem(choix-1, p)
+ 
+	// On applique l'effet selon l'objet choisi.
+	switch item.Name {
+	case HealingPotion.Name:
+		p.Heal(item.Value)
+		fmt.Println("Tu utilises", item.Name, "et récupères", item.Value, "PV")
+ 
+	case PoisonPotion.Name:
+		p.TakeDamage(item.Value)
+		fmt.Println("Tu utilises", item.Name, "et perds", item.Value, "PV")
+ 
+	default:
+		fmt.Println(item.Name, "ne peut pas être utilisé en combat")
+		return false
+	}
+ 
+	// L'objet est consommé.
+	p.Inventory.RemoveItem(choix - 1)
+ 
+	fmt.Println(p.Name, ":", p.HP, "/", p.MaxHP, "pv")
  
 	return true
 }
