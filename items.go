@@ -32,6 +32,12 @@ var Axe = Item{
 	Description: "Une hache",
 }
 
+var Dagger = Item{
+	Name:        "Dague",
+	Type:        TypeWeapon,
+	Description: "Une Dague",
+}
+
 var Sword = Item{
 	Name:        "Épée",
 	Type:        TypeWeapon,
@@ -42,6 +48,12 @@ var MageStaff = Item{
 	Name:        "Bâton de mage",
 	Type:        TypeWeapon,
 	Description: "Un bâton utilisé par les mages",
+}
+
+var DragonSword = Item{
+	Name:        "épée du dragon",
+	Type:        TypeWeapon,
+	Description: "Une épée utilisant la puissance des dragons",
 }
 
 var Spellbook = Item{

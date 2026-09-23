@@ -35,8 +35,35 @@ func monsterAttack(m Monster, p *Player, tour int) {
 }
 
 	
+func ChooseSpell(m *Monster, p *Player) bool {
+	spells := sortsDuJoueur()
 
-
+	for i, s := range spells {
+		fmt.Printf("[%d] %s (%d dégâts)\n", i+1, s.nom, s.degats)
+	}
+	fmt.Println("[0] Retour")
+ 
+	var choix int
+	fmt.Scanln(&choix)
+ 
+	if choix == 0 {
+		return false
+	}
+	if choix < 1 || choix > len(spells) {
+		fmt.Println("Ce choix n'existe pas")
+		return false
+	}
+ 
+	spell := spells[choix-1]
+ 
+	damageMonster(m, spell.degats)
+ 
+	fmt.Println()
+	fmt.Println(p.Name, "lance", spell.nom, "et inflige", spell.degats, "dégâts au", m.nom)
+	fmt.Println()
+ 
+	return true
+}
 
 func playerAttack(m *Monster, p Player) {
 	attaqueBasique := 5
@@ -54,21 +81,21 @@ func pvBar(pv int, pvMax int) string {
 	return strings.Repeat("█", pleine) + strings.Repeat("░", vide)
 }
 
-func characterTurn(m *Monster, p Player) int {
+func characterTurn(m *Monster, p *Player) (int, bool) {
 	var choix int
 	fmt.Scanln(&choix)
-
+ 
 	switch choix {
 	case 1:
-		playerAttack(m, p)
+		return choix, ChooseSpell(m, p)
 	case 2:
-		fmt.Println("Inventaire bientôt dispo !!")
+		return choix, useInventory(p)
 	case 3:
-		fmt.Println("Tu prends la fuite")
+		return choix, true
 	default:
 		fmt.Println("Choix invalide")
+		return choix, false
 	}
-	return choix
 }
 
 func displayCombat(m Monster, p Player, tour int) {
@@ -96,25 +123,27 @@ func trainingFight(m *Monster, p *Player) {
 	for {
 		displayCombat(*m, *p, tour)
 
-		choix := characterTurn(m, *p)
+		choix, aJoue := characterTurn(m, p)
 
 		if choix == 3 {
 			break
 		}
-		if choix != 1 &&  choix != 2 &&  choix !=  3 {
-			continue 
-
+		if !aJoue {
+			time.Sleep(1 * time.Second)
+			clearScreen()
+			continue
 		}
+
+		
 		if isMonsterDead(*m) {
 			fmt.Println("====== Victoire ! 🎉 ======")
 
-			gain := rollGold(*m)
-			p.AddGold(gain)
+			rollGold(*m, p)
 
 			p.GainXP(m.xp)
 			fmt.Println("✨", p.Name, "gagne", m.xp, "XP")
 
-			rollDrops(*m)
+			rollDrops(*m, p)
 			break
 		}
 
@@ -138,22 +167,32 @@ func clearScreen() {
 }
 
 
-func useInventory(p *Player) {
-if p.Inventory.Size() == 0 {
-	fmt.Println("Ton inventaire est vide ..")
-		return	}
-for i, r := range p.Inventory.Items {
+func useInventory(p *Player) bool {
+	if p.Inventory.Size() == 0 {
+		fmt.Println("Ton inventaire est vide ..")
+		return false
+	}
+ 
+	for i, r := range p.Inventory.Items {
+		fmt.Printf("[%d] %s \n", i+1, r.Name)
+	}
+	fmt.Println("[0] Retour")
+ 
+	var choix int
+	fmt.Scanln(&choix)
+ 
+	if choix == 0 {
+		return false
+	}
+	if choix < 1 || choix > len(p.Inventory.Items) {
+		fmt.Println("Ce choix n'existe pas")
+		return false
+	}
+ 
+	item := p.Inventory.Items[choix-1]
+	fmt.Println("Tu utilises", item.Name)
+	p.Inventory.UseItem(choix-1, p)
+ 
+	return true
+}
 
- fmt.Printf("[%d] %s \n", i+1, r.Name)
-}
-fmt.Println("[0] Retour")
-var choix int
-fmt.Scanln(&choix)
-if choix == 0 {
-	return 
-}
-if choix < 1 || choix > len(p.Inventory.Items){
-	fmt.Println("Ce choix n'existe pas")
-	return
-}
-}

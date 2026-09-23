@@ -22,7 +22,7 @@ type Monster struct {
 
 type Drop struct {
 	emoji  string
-	nom    string
+	item    Item
 	taux   int
 	nbrMin int
 	nbrMax int
@@ -63,7 +63,7 @@ func initGoblin() Monster {
 		orMin:  4,
 		orMax:  7,
 		drops: []Drop{
-			{emoji: "🗡️", nom: "Dague", taux: 2, nbrMin: 1, nbrMax: 1},
+			{emoji: "🗡️", item: Dagger, taux: 2, nbrMin: 1, nbrMax: 1},
 		},
 		attaques: []Attaque{
 			{nom: "Coups de poing", degats: 10, precision: 70}, 
@@ -84,8 +84,7 @@ func initLoup() Monster {
 		orMin:  6,
 		orMax:  8,
 		drops: []Drop{
-			{emoji: "🧶", nom: "Fourrure", taux: 70, nbrMin: 1, nbrMax: 2},
-			{emoji: "🥩", nom: "Viande", taux: 40, nbrMin: 1, nbrMax: 3},
+			{emoji: "🧶", item : Fur , taux: 70, nbrMin: 1, nbrMax: 2},
 		},
 		attaques: []Attaque{
 			{nom: "Morsure", degats: 10, precision: 70}, 
@@ -106,8 +105,7 @@ func initSanglier() Monster {
 		orMin:  10,
 		orMax:  13,
 		drops: []Drop{
-			{emoji: "🧥", nom: "Cuir", taux: 40, nbrMin: 1, nbrMax: 3},
-			{emoji: "🥩", nom: "Viande", taux: 70, nbrMin: 2, nbrMax: 4},
+			{emoji: "🧥", item: Leather , taux: 40, nbrMin: 1, nbrMax: 3},
 		},
 		attaques: []Attaque{
 			{nom: "Morsure", degats: 12, precision: 70}, 
@@ -128,7 +126,7 @@ func initMage() Monster {
 		orMin:  14,
 		orMax:  17,
 		drops: []Drop{
-			{emoji: "🪄", nom: "Bâton de mage", taux: 40, nbrMin: 1, nbrMax: 1},
+			{emoji: "🪄", item: MageStaff, taux: 40, nbrMin: 1, nbrMax: 1},
 		},
 		attaques: []Attaque{
 			{nom: "Boule de feu", degats: 13, precision: 70}, 
@@ -149,7 +147,7 @@ func initOgre() Monster {
 		orMin:  18,
 		orMax:  21,
 		drops: []Drop{
-			{emoji: "🪨", nom: "Peau", taux: 30, nbrMin: 1, nbrMax: 1},
+			{emoji: "🪨", item: Hide, taux: 30, nbrMin: 1, nbrMax: 1},
 		},
 		attaques: []Attaque{
 			{nom: "Coups de massue", degats: 14, precision: 70}, 
@@ -170,7 +168,7 @@ func initDragon() Monster {
 		orMin:  30,
 		orMax:  35,
 		drops: []Drop{
-			{emoji: "🥚", nom: "Oeuf de Dragon", taux: 5, nbrMin: 1, nbrMax: 1},
+			{emoji: "⚔️", item: DragonSword, taux: 5, nbrMin: 1, nbrMax: 1},
 		},
 		attaques: []Attaque{
 			{nom: "Lance flamme", degats: 50, precision: 70}, 
@@ -200,18 +198,25 @@ func isMonsterDead(m Monster) bool {
 	return false
 }
 
-func rollDrops(m Monster) {
+func rollDrops(m Monster, p *Player) {
 	for _, r := range m.drops {
 		if r.taux > rand.Intn(100) {
 			resultatDrop := rand.Intn(r.nbrMax-r.nbrMin+1) + r.nbrMin
-			fmt.Println("Bien joué, le", m.nom, "a laissé", resultatDrop, r.emoji, r.nom)
+ 
+			for i := 0; i < resultatDrop; i++ {
+				if !p.Inventory.AddItem(r.item) {
+					fmt.Println("Inventaire plein, tu perds", r.item.Name)
+					break
+				}
+			}
+ 
+			fmt.Println("Bien joué, le", m.nom, "a laissé", resultatDrop, r.emoji, r.item.Name)
 		}
 	}
 }
 
-// rollGold calcule l'or gagné, l'affiche, puis renvoie le montant.
-func rollGold(m Monster) int {
+func rollGold(m Monster, p *Player) {
 	resultatOr := rand.Intn(m.orMax-m.orMin+1) + m.orMin
-	fmt.Println(" Le", m.nom, "a laissé", resultatOr, "pièces d'or")
-	return resultatOr
+	p.AddGold(resultatOr)
+	fmt.Println("Le", m.nom, "a laissé", resultatOr, "pièces d'or")
 }

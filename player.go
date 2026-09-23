@@ -78,3 +78,4 @@ func (p *Player) RemoveGold(amount int) bool {
 	p.Gold -= amount
 	return true
 }
+
