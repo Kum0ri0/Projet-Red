@@ -13,10 +13,12 @@ func Foret() {
 		fmt.Scan(&choix)
 
 		if choix == 1 {
-			bois = bois + 3
-			fmt.Println("Vous avez récolté 3 bois.")
-			fmt.Println("Vous avez", bois, "bois.")
-		}
+	        bois = bois + 3
+	        boisQuete = boisQuete + 3
+	        fmt.Println("Vous avez récolté 3 bois.")
+	        fmt.Println("Vous avez", bois, "bois.")
+        }
+        
 
 		if choix == 2 {
 			fmt.Println("Vous explorez la forêt.")
