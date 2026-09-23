@@ -88,6 +88,16 @@ var Metal = Item{
 	Description: "Un morceau de métal.",
 	Value:       8,
 }
+var Dagger = Item{
+	Name:        "Dague",
+	Type:        TypeWeapon,
+	Description: "Une Dague",
+}
+var DragonSword = Item{
+	Name:        "épée du dragon",
+	Type:        TypeWeapon,
+	Description: "Une épée utilisant la puissance des dragons",
+}
 
 // Display affiche les informations d'un objet.
 func (i Item) Display() {
