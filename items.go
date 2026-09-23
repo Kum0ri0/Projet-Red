@@ -9,14 +9,16 @@ type Item struct {
 	Value       int
 }
 
-// Types d'objets.
 const (
 	TypeWeapon   = "Arme"
 	TypePotion   = "Potion"
 	TypeResource = "Ressource"
 )
 
-// Armes
+// =========================
+// ARMES
+// =========================
+
 var Axe = Item{
 	Name:        "Hache",
 	Type:        TypeWeapon,
@@ -38,7 +40,24 @@ var MageStaff = Item{
 	Value:       30,
 }
 
-// Potions
+var WoodenSword = Item{
+	Name:        "Épée en bois",
+	Type:        TypeWeapon,
+	Description: "Une épée fabriquée en bois.",
+	Value:       20,
+}
+
+var MetalSword = Item{
+	Name:        "Épée en métal",
+	Type:        TypeWeapon,
+	Description: "Une épée fabriquée en métal.",
+	Value:       40,
+}
+
+// =========================
+// POTIONS
+// =========================
+
 var HealingPotion = Item{
 	Name:        "Potion de soin",
 	Type:        TypePotion,
@@ -53,7 +72,10 @@ var PoisonPotion = Item{
 	Value:       30,
 }
 
-// Ressources
+// =========================
+// RESSOURCES
+// =========================
+
 var Fur = Item{
 	Name:        "Fourrure",
 	Type:        TypeResource,
@@ -88,35 +110,29 @@ var Metal = Item{
 	Description: "Un morceau de métal.",
 	Value:       8,
 }
-var Dagger = Item{
-	Name:        "Dague",
-	Type:        TypeWeapon,
-	Description: "Une Dague",
-}
-var DragonSword = Item{
-	Name:        "épée du dragon",
-	Type:        TypeWeapon,
-	Description: "Une épée utilisant la puissance des dragons",
-}
 
-// Display affiche les informations d'un objet.
+// =========================
+// AFFICHAGE
+// =========================
+
 func (i Item) Display() {
 	fmt.Println("╔══════════════════════════════╗")
-	fmt.Println("║             OBJET            ║")
+	fmt.Println("║            OBJET             ║")
 	fmt.Println("╠══════════════════════════════╣")
-	fmt.Printf("║ Nom         : %-15s ║\n", i.Name)
-	fmt.Printf("║ Type        : %-15s ║\n", i.Type)
-	fmt.Printf("║ Description : %-15s ║\n", i.Description)
-	fmt.Printf("║ Valeur      : %-15d ║\n", i.Value)
+	fmt.Printf("║ Nom         : %-14s ║\n", i.Name)
+	fmt.Printf("║ Type        : %-14s ║\n", i.Type)
+	fmt.Printf("║ Description : %-14s ║\n", i.Description)
+	fmt.Printf("║ Valeur      : %-14d ║\n", i.Value)
 	fmt.Println("╚══════════════════════════════╝")
 }
 
-// DisplayAll affiche tous les objets disponibles.
 func DisplayAll() {
 	items := []Item{
 		Axe,
 		Sword,
 		MageStaff,
+		WoodenSword,
+		MetalSword,
 		HealingPotion,
 		PoisonPotion,
 		Fur,
@@ -127,12 +143,10 @@ func DisplayAll() {
 	}
 
 	fmt.Println("╔══════════════════════════════╗")
-	fmt.Println("║       OBJETS DISPONIBLES     ║")
-	fmt.Println("╠══════════════════════════════╣")
+	fmt.Println("║          OBJETS              ║")
+	fmt.Println("╚══════════════════════════════╝")
 
 	for _, item := range items {
-		fmt.Printf("║ %-20s ║\n", item.Name)
+		fmt.Printf("- %-20s [%s]\n", item.Name, item.Type)
 	}
-
-	fmt.Println("╚══════════════════════════════╝")
 }

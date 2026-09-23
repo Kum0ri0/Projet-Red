@@ -1,8 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
-func Medecin() {
+func Medecin(joueur *Player) {
 	for {
 		fmt.Println("MEDECIN")
 		fmt.Println("1. Se soigner")
@@ -12,9 +14,9 @@ func Medecin() {
 		fmt.Scan(&choix)
 
 		if choix == 1 {
-			if vie < vieMax {
-				vie = vieMax
-				fmt.Println("Vous êtes maintenant à", vie, "PV.")
+			if joueur.HP < joueur.MaxHP {
+				joueur.Heal(joueur.MaxHP)
+				fmt.Println("Vous êtes maintenant à", joueur.HP, "PV.")
 			} else {
 				fmt.Println("Vous avez déjà tous vos PV.")
 			}

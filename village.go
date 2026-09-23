@@ -1,8 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)	
 
-func Village() {
+func Village(joueur *Player, inv *Inventory) {
 	for {
 		fmt.Println("VILLAGE DE MARCHANG")
 		fmt.Println("1. Aller aux prairies")
@@ -10,49 +12,49 @@ func Village() {
 		fmt.Println("3. Aller chez le forgeron")
 		fmt.Println("4. Voir l'inventaire")
 		fmt.Println("5. Aller à la mine")
-		fmt.Println("6. Aller le marchand")
+		fmt.Println("6. Aller chez le marchand")
 		fmt.Println("7. Aller chez le médecin")
 		fmt.Println("8. Voir les quêtes")
-        fmt.Println("9. Quitter le jeu")
+		fmt.Println("9. Quitter le jeu")
 
 		var choix int
 		fmt.Scan(&choix)
 
 		if choix == 1 {
-			Prairies()
+			Prairies(inv)
 		}
 
 		if choix == 2 {
-	        Foret()
+			Foret(inv)
+		}
 
-        }
-	    
 		if choix == 3 {
-			Forgeron()
+			Forgeron(inv)
 		}
 
 		if choix == 4 {
-			Inventaire()
+			inv.Display()
 		}
 
 		if choix == 5 {
-			Mine()
+			Mine(inv)
 		}
 
 		if choix == 6 {
-	        Marchand()
-        }
+			Marchand(joueur, inv)
+		}
 
-        if choix == 7 {
-	        Medecin()
-        }
+		if choix == 7 {
+			Medecin(joueur)
+		}
 
-        if choix == 8 {
-	        Quetes()
-        }
+		if choix == 8 {
+			Quetes(joueur)
+		}
+
 		if choix == 9 {
-	        return
-        }
+			return
 		}
+	}
+}
 
-		}

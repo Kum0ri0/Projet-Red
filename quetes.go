@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 var boisQuete int
 var queteBoisTerminee bool
@@ -14,7 +16,7 @@ var epeeMetalQuete int
 var queteEpeeBoisTerminee bool
 var queteEpeeMetalTerminee bool
 
-func Quetes() {
+func Quetes(joueur *Player) {
 	for {
 		fmt.Println("QUÊTES")
 		fmt.Println("1. Le bois du village")
@@ -36,7 +38,8 @@ func Quetes() {
 
 				if boisQuete >= 10 {
 					queteBoisTerminee = true
-					argent = argent + 50
+					joueur.AddGold(50)
+
 					fmt.Println("QUÊTE TERMINÉE !")
 					fmt.Println("Vous gagnez 50 pièces.")
 				}
@@ -53,7 +56,8 @@ func Quetes() {
 
 				if metalQuete >= 10 {
 					queteMetalTerminee = true
-					argent = argent + 75
+					joueur.AddGold(75)
+
 					fmt.Println("QUÊTE TERMINÉE !")
 					fmt.Println("Vous gagnez 75 pièces.")
 				}
@@ -70,7 +74,8 @@ func Quetes() {
 
 				if epeeBoisQuete >= 1 {
 					queteEpeeBoisTerminee = true
-					argent = argent + 50
+					joueur.AddGold(50)
+
 					fmt.Println("QUÊTE TERMINÉE !")
 					fmt.Println("Vous gagnez 50 pièces.")
 				}
@@ -87,7 +92,8 @@ func Quetes() {
 
 				if epeeMetalQuete >= 1 {
 					queteEpeeMetalTerminee = true
-					argent = argent + 100
+					joueur.AddGold(100)
+
 					fmt.Println("QUÊTE TERMINÉE !")
 					fmt.Println("Vous gagnez 100 pièces.")
 				}

@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func Forgeron() {
+func Forgeron(inv *Inventory) {
 	for {
 		fmt.Println("FORGERON")
 		fmt.Println("1. Fabriquer une épée en bois")
@@ -13,25 +13,35 @@ func Forgeron() {
 		fmt.Scan(&choix)
 
 		if choix == 1 {
-			if bois >= 5 {
-				bois = bois - 5
-				epeeBois = epeeBois + 1
-				epeeBoisQuete = epeeBoisQuete + 1
+			bois := compterItem(inv, "Bois")
 
-				fmt.Println("Vous avez fabriqué une épée en bois.")
+			if bois >= 5 {
+				for i := 0; i < 5; i++ {
+					supprimerItem(inv, "Bois")
+				}
+
+				if inv.AddItem(WoodenSword) {
+					fmt.Println("Vous avez fabriqué une épée en bois.")
+				}
 			} else {
 				fmt.Println("Vous n'avez pas assez de bois.")
 			}
 		}
 
 		if choix == 2 {
-			if metal >= 3 && bois >= 1 {
-				metal = metal - 3
-				bois = bois - 1
-				epeeMetal = epeeMetal + 1
-				epeeMetalQuete = epeeMetalQuete + 1
+			metal := compterItem(inv, "Métal")
+			bois := compterItem(inv, "Bois")
 
-				fmt.Println("Vous avez fabriqué une épée en métal.")
+			if metal >= 3 && bois >= 1 {
+				for i := 0; i < 3; i++ {
+					supprimerItem(inv, "Métal")
+				}
+
+				supprimerItem(inv, "Bois")
+
+				if inv.AddItem(MetalSword) {
+					fmt.Println("Vous avez fabriqué une épée en métal.")
+				}
 			} else {
 				fmt.Println("Vous n'avez pas assez de matériaux.")
 			}
@@ -41,4 +51,26 @@ func Forgeron() {
 			return
 		}
 	}
+}
+
+func compterItem(inv *Inventory, nom string) int {
+	compteur := 0
+
+	for _, objet := range inv.Items {
+		if objet.Name == nom {
+			compteur++
+		}
+	}
+
+	return compteur
+}
+
+func supprimerItem(inv *Inventory, nom string) bool {
+	for index, objet := range inv.Items {
+		if objet.Name == nom {
+			return inv.RemoveItem(index)
+		}
+	}
+
+	return false
 }

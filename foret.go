@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func Foret() {
+func Foret(inv *Inventory) {
 	for {
 		fmt.Println("FORET DE MARCHANG")
 		fmt.Println("1. Récolter du bois")
@@ -13,12 +13,15 @@ func Foret() {
 		fmt.Scan(&choix)
 
 		if choix == 1 {
-	        bois = bois + 3
-	        boisQuete = boisQuete + 3
-	        fmt.Println("Vous avez récolté 3 bois.")
-	        fmt.Println("Vous avez", bois, "bois.")
-        }
-        
+			for i := 0; i < 3; i++ {
+				if !inv.AddItem(Wood) {
+					fmt.Println("Votre inventaire est plein.")
+					break
+				}
+			}
+
+			fmt.Println("Vous avez récolté 3 bois.")
+		}
 
 		if choix == 2 {
 			fmt.Println("Vous explorez la forêt.")
@@ -29,3 +32,5 @@ func Foret() {
 		}
 	}
 }
+
+

@@ -1,8 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
-func Marchand() {
+func Marchand(joueur *Player, inv *Inventory) {
 	for {
 		fmt.Println("MARCHAND")
 		fmt.Println("1. Acheter")
@@ -22,20 +24,28 @@ func Marchand() {
 			fmt.Scan(&achat)
 
 			if achat == 1 {
-				if argent >= 10 {
-					argent = argent - 10
-					bois = bois + 1
-					fmt.Println("Vous avez acheté 1 bois.")
+				if joueur.Gold >= 10 {
+					if inv.IsFull() {
+						fmt.Println("Votre inventaire est plein.")
+					} else {
+						joueur.Gold -= 10
+						inv.AddItem(Wood)
+						fmt.Println("Vous avez acheté 1 bois.")
+					}
 				} else {
 					fmt.Println("Vous n'avez pas assez d'argent.")
 				}
 			}
 
 			if achat == 2 {
-				if argent >= 20 {
-					argent = argent - 20
-					metal = metal + 1
-					fmt.Println("Vous avez acheté 1 métal.")
+				if joueur.Gold >= 20 {
+					if inv.IsFull() {
+						fmt.Println("Votre inventaire est plein.")
+					} else {
+						joueur.Gold -= 20
+						inv.AddItem(Metal)
+						fmt.Println("Vous avez acheté 1 métal.")
+					}
 				} else {
 					fmt.Println("Vous n'avez pas assez d'argent.")
 				}
@@ -54,9 +64,11 @@ func Marchand() {
 			fmt.Scan(&vente)
 
 			if vente == 1 {
-				if bois >= 1 {
-					bois = bois - 1
-					argent = argent + 5
+				index := trouverItem(inv, "Bois")
+
+				if index != -1 {
+					inv.RemoveItem(index)
+					joueur.Gold += 5
 					fmt.Println("Vous avez vendu 1 bois.")
 				} else {
 					fmt.Println("Vous n'avez pas de bois.")
@@ -64,9 +76,11 @@ func Marchand() {
 			}
 
 			if vente == 2 {
-				if metal >= 1 {
-					metal = metal - 1
-					argent = argent + 10
+				index := trouverItem(inv, "Métal")
+
+				if index != -1 {
+					inv.RemoveItem(index)
+					joueur.Gold += 10
 					fmt.Println("Vous avez vendu 1 métal.")
 				} else {
 					fmt.Println("Vous n'avez pas de métal.")
@@ -74,9 +88,11 @@ func Marchand() {
 			}
 
 			if vente == 3 {
-				if epeeBois >= 1 {
-					epeeBois = epeeBois - 1
-					argent = argent + 20
+				index := trouverItem(inv, "Épée en bois")
+
+				if index != -1 {
+					inv.RemoveItem(index)
+					joueur.Gold += 20
 					fmt.Println("Vous avez vendu une épée en bois.")
 				} else {
 					fmt.Println("Vous n'avez pas d'épée en bois.")
@@ -84,9 +100,11 @@ func Marchand() {
 			}
 
 			if vente == 4 {
-				if epeeMetal >= 1 {
-					epeeMetal = epeeMetal - 1
-					argent = argent + 40
+				index := trouverItem(inv, "Épée en métal")
+
+				if index != -1 {
+					inv.RemoveItem(index)
+					joueur.Gold += 40
 					fmt.Println("Vous avez vendu une épée en métal.")
 				} else {
 					fmt.Println("Vous n'avez pas d'épée en métal.")
@@ -98,4 +116,14 @@ func Marchand() {
 			return
 		}
 	}
+}
+
+func trouverItem(inv *Inventory, nom string) int {
+	for index, objet := range inv.Items {
+		if objet.Name == nom {
+			return index
+		}
+	}
+
+	return -1
 }

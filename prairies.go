@@ -1,8 +1,10 @@
-package main 
+package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
-func Prairies() {
+func Prairies(inv *Inventory) {
 	for {
 		fmt.Println("Vous êtes dans les prairies.")
 		fmt.Println("1. Récolter des matériaux")
@@ -13,9 +15,14 @@ func Prairies() {
 		fmt.Scan(&choix)
 
 		if choix == 1 {
-			bois = bois + 3
+			for i := 0; i < 3; i++ {
+				if !inv.AddItem(Wood) {
+					fmt.Println("Votre inventaire est plein.")
+					break
+				}
+			}
+
 			fmt.Println("Vous avez récolté 3 bois.")
-			fmt.Println("Vous avez", bois, "bois.")
 		}
 
 		if choix == 2 {

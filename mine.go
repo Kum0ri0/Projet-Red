@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func Mine() {
+func Mine(inv *Inventory) {
 	for {
 		fmt.Println("MINE DE MARCHANG")
 		fmt.Println("1. Miner du métal")
@@ -12,9 +12,14 @@ func Mine() {
 		fmt.Scan(&choix)
 
 		if choix == 1 {
-			metal = metal + 2
+			for i := 0; i < 2; i++ {
+				if !inv.AddItem(Metal) {
+					fmt.Println("Votre inventaire est plein.")
+					break
+				}
+			}
+
 			fmt.Println("Vous avez récolté 2 métaux.")
-			fmt.Println("Vous avez", metal, "métaux.")
 		}
 
 		if choix == 2 {
