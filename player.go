@@ -18,14 +18,15 @@ var Fireball = Spell{
 }
 
 type Player struct {
-	Name   string
-	Class  string
-	HP     int
-	MaxHP  int
-	Level  int
-	XP     int
-	Gold   int
-	Spells []Spell
+	Name      string
+	Class     string
+	HP        int
+	MaxHP     int
+	Level     int
+	XP        int
+	Gold      int
+	Spells    []Spell
+	Inventory Inventory
 }
 
 // CreatePlayer crée un nouveau personnage avec Coup de poing.
@@ -121,4 +122,3 @@ func (p *Player) RemoveGold(amount int) bool {
 	p.Gold -= amount
 	return true
 }
-
