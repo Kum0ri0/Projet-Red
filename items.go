@@ -32,6 +32,17 @@ var Sword = Item{
 	Description: "Une épée tranchante.",
 	Value:       25,
 }
+var DragonSword = Item{
+	Name:        "épée du Dragon",
+	Type:        TypeWeapon,
+	Description: "L'épée obtenue aprés avoir vaincu le Dragon",
+}
+
+var Dagger = Item{
+	Name:        "Dague",
+	Type:        TypeWeapon,
+	Description: "Une dague",
+}
 
 var MageStaff = Item{
 	Name:        "Bâton de mage",
