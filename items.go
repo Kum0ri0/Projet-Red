@@ -1,80 +1,128 @@
 package main
 
+import "fmt"
+
 type Item struct {
 	Name        string
 	Type        string
 	Description string
-	Value 	int 
+	Value       int
 }
+
+// Types d'objets.
 const (
-	TypePotion    = "Potion"
-	TypeWeapon    = "Arme"
-	TypeSpellbook = "Livre de sorts"
-	TypeMaterial  = "Matériau"
+	TypeWeapon   = "Arme"
+	TypePotion   = "Potion"
+	TypeResource = "Ressource"
 )
-var HealingPotion = Item{
-	Name:        "Potion de soin",
-	Type:        TypePotion,
-	Description: "Restaure des PV",
-	Value: 50,
-}
 
-var PoisonPotion = Item{
-	Name:        "Potion de poison",
-	Type:        TypePotion,
-	Description: "Une potion empoisonnée",
-	Value : 30, 
-}
-
+// Armes
 var Axe = Item{
 	Name:        "Hache",
 	Type:        TypeWeapon,
-	Description: "Une hache",
+	Description: "Une hache solide.",
+	Value:       20,
 }
 
 var Sword = Item{
 	Name:        "Épée",
 	Type:        TypeWeapon,
-	Description: "Une épée",
+	Description: "Une épée tranchante.",
+	Value:       25,
 }
 
 var MageStaff = Item{
 	Name:        "Bâton de mage",
 	Type:        TypeWeapon,
-	Description: "Un bâton utilisé par les mages",
+	Description: "Un bâton utilisé par les mages.",
+	Value:       30,
 }
 
-var Spellbook = Item{
-	Name:        "Livre de sorts",
-	Type:        TypeSpellbook,
-	Description: "Un livre contenant des sorts",
+// Potions
+var HealingPotion = Item{
+	Name:        "Potion de soin",
+	Type:        TypePotion,
+	Description: "Restaure 50 PV.",
+	Value:       50,
 }
+
+var PoisonPotion = Item{
+	Name:        "Potion de poison",
+	Type:        TypePotion,
+	Description: "Fait perdre 30 PV.",
+	Value:       30,
+}
+
+// Ressources
 var Fur = Item{
 	Name:        "Fourrure",
-	Type:        TypeMaterial,
-	Description: "Une fourrure utilisée comme matériau",
+	Type:        TypeResource,
+	Description: "Une fourrure récupérée sur un animal.",
+	Value:       5,
 }
 
 var Leather = Item{
 	Name:        "Cuir",
-	Type:        TypeMaterial,
-	Description: "Du cuir utilisé comme matériau",
+	Type:        TypeResource,
+	Description: "Du cuir pouvant servir à fabriquer des objets.",
+	Value:       5,
 }
 
 var Hide = Item{
 	Name:        "Peau",
-	Type:        TypeMaterial,
-	Description: "Une peau utilisée comme matériau",
+	Type:        TypeResource,
+	Description: "Une peau récupérée sur un animal.",
+	Value:       4,
 }
 
 var Wood = Item{
 	Name:        "Bois",
-	Type:        TypeMaterial,
-	Description: "Du bois utilisé comme matériau",
+	Type:        TypeResource,
+	Description: "Un morceau de bois.",
+	Value:       2,
 }
 
 var Metal = Item{
 	Name:        "Métal",
-	Type:        TypeMaterial,
-	Description: "Du métal utilisé comme matériau",
+	Type:        TypeResource,
+	Description: "Un morceau de métal.",
+	Value:       8,
+}
+
+// Display affiche les informations d'un objet.
+func (i Item) Display() {
+	fmt.Println("╔══════════════════════════════╗")
+	fmt.Println("║             OBJET            ║")
+	fmt.Println("╠══════════════════════════════╣")
+	fmt.Printf("║ Nom         : %-15s ║\n", i.Name)
+	fmt.Printf("║ Type        : %-15s ║\n", i.Type)
+	fmt.Printf("║ Description : %-15s ║\n", i.Description)
+	fmt.Printf("║ Valeur      : %-15d ║\n", i.Value)
+	fmt.Println("╚══════════════════════════════╝")
+}
+
+// DisplayAll affiche tous les objets disponibles.
+func DisplayAll() {
+	items := []Item{
+		Axe,
+		Sword,
+		MageStaff,
+		HealingPotion,
+		PoisonPotion,
+		Fur,
+		Leather,
+		Hide,
+		Wood,
+		Metal,
+	}
+
+	fmt.Println("╔══════════════════════════════╗")
+	fmt.Println("║       OBJETS DISPONIBLES     ║")
+	fmt.Println("╠══════════════════════════════╣")
+
+	for _, item := range items {
+		fmt.Printf("║ %-20s ║\n", item.Name)
+	}
+
+	fmt.Println("╚══════════════════════════════╝")
 }
