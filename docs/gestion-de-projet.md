@@ -42,4 +42,4 @@
 
 - **Travail à plusieurs sur les mêmes fichiers :** une modification de `player.go` a retiré l'inventaire du joueur et cassé la compilation du combat.
 - **Deux inventaires en double :** le village utilisait ses propres variables (bois, argent, vie), séparées du `Player`. Ils ont été fusionnés.
-- **Saisie clavier :** `fmt.Scan` réaffichait le menu en boucle sur une saisie invalide ; remplacé par `lireChoix()`.
+- **Saisie clavier :** `fmt.Scan` réaffichait le menu en boucle sur une saisie invalide ; remplacé par `lireChoix()`

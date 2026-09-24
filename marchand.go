@@ -6,24 +6,14 @@ import (
 // ajout spell book et modif de forme
 func Marchand(joueur *Player, inv *Inventory) {
 	for {
-		fmt.Println("MARCHAND")
-		fmt.Println("1. Acheter")
-		fmt.Println("2. Vendre")
-		fmt.Println("3. Retourner au village")
+		fmt.Println("====== MARCHAND ======")
+		fmt.Println("")
+		fmt.Println("[1] Acheter")
+		fmt.Println("[2] Vendre")
+		fmt.Println("[3] Retourner au village")
 
 		var choix int
 		fmt.Scan(&choix)
-
-		if choix == 1 {
-		fmt.Println("===== ACHETER =====")
-		fmt.Println("[1] Acheter du bois - 10 pièces")
-		fmt.Println("[2] Acheter du métal - 20 pièces")
-		fmt.Println("[3] Acheter Grimoire : Lame d'eau - 40 pièces")
-		fmt.Println("[4] Acheter Grimoire : Fireball - 80 pièces")
-		fmt.Println("[5] Retour")
-
-			var achat int
-			fmt.Scan(&achat)
 
 		if choix == 1 {
 			fmt.Println("===== ACHETER =====")
@@ -31,7 +21,9 @@ func Marchand(joueur *Player, inv *Inventory) {
 			fmt.Println("[2] Acheter du métal - 20 pièces")
 			fmt.Println("[3] Acheter Grimoire : Lame d'eau - 40 pièces")
 			fmt.Println("[4] Acheter Grimoire : Fireball - 80 pièces")
-			fmt.Println("[5] Retour")
+			fmt.Println("[5] Acheter une potion de soin - 3 pièces")
+			fmt.Println("[6] Acheter une potion de poison - 6 pièces")
+			fmt.Println("[7] Retour")
 
 			var achat int
 			fmt.Scan(&achat)
@@ -91,8 +83,36 @@ func Marchand(joueur *Player, inv *Inventory) {
 					fmt.Println("Vous n'avez pas assez d'argent.")
 				}
 			}
+
+			if achat == 5 {
+				if joueur.Gold >= 3 {
+					if inv.IsFull() {
+						fmt.Println("Votre inventaire est plein.")
+					} else {
+						joueur.Gold -= 3
+						inv.AddItem(HealingPotion)
+						fmt.Println("Vous avez acheté une potion de soin.")
+					}
+				} else {
+					fmt.Println("Vous n'avez pas assez d'argent.")
+				}
+			}
+
+			if achat == 6 {
+				if joueur.Gold >= 6 {
+					if inv.IsFull() {
+						fmt.Println("Votre inventaire est plein.")
+					} else {
+						joueur.Gold -= 6
+						inv.AddItem(PoisonPotion)
+						fmt.Println("Vous avez acheté une potion de poison.")
+					}
+				} else {
+					fmt.Println("Vous n'avez pas assez d'argent.")
+				}
+			}
 		}
-	}
+
 		if choix == 2 {
 			fmt.Println("VENDRE")
 			fmt.Println("1. Vendre du bois - 5 pièces")
