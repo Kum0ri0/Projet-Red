@@ -4,10 +4,11 @@ import "fmt"
 
 func Forgeron(inv *Inventory) {
 	for {
-		fmt.Println("FORGERON")
-		fmt.Println("1. Fabriquer une épée en bois")
-		fmt.Println("2. Fabriquer une épée en métal")
-		fmt.Println("3. Retourner au village")
+		fmt.Println("===== FORGERON =====")
+		fmt.Println()
+		fmt.Println("[1] Fabriquer une épée en bois")
+		fmt.Println("[2] Fabriquer une épée en métal")
+		fmt.Println("[3] Retourner au village")
 
 		var choix int
 		fmt.Scan(&choix)

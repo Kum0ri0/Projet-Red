@@ -4,9 +4,10 @@ import "fmt"
 
 func Mine(inv *Inventory) {
 	for {
-		fmt.Println("MINE DE MARCHANG")
-		fmt.Println("1. Miner du métal")
-		fmt.Println("2. Retourner au village")
+		fmt.Println("===== MINE DE MARCHANG =====")
+		fmt.Printf("")
+		fmt.Println("[1] Miner du métal")
+		fmt.Println("[2] Retourner au village")
 
 		var choix int
 		fmt.Scan(&choix)

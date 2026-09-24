@@ -6,9 +6,10 @@ import (
 
 func Medecin(joueur *Player) {
 	for {
-		fmt.Println("MEDECIN")
-		fmt.Println("1. Se soigner")
-		fmt.Println("2. Retourner au village")
+		fmt.Println("===== MEDECIN =====")
+		fmt.Printf("")
+		fmt.Println("[1] Se soigner")
+		fmt.Println("[2] Retourner au village")
 
 		var choix int
 		fmt.Scan(&choix)

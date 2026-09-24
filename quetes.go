@@ -18,12 +18,13 @@ var queteEpeeMetalTerminee bool
 
 func Quetes(joueur *Player) {
 	for {
-		fmt.Println("QUÊTES")
-		fmt.Println("1. Le bois du village")
-		fmt.Println("2. Le métal de la mine")
-		fmt.Println("3. Fabriquer une épée en bois")
-		fmt.Println("4. Fabriquer une épée en métal")
-		fmt.Println("5. Retourner au village")
+		fmt.Println("===== QUÊTES =====")
+		fmt.Printf("")
+		fmt.Println("[1] Le bois du village")
+		fmt.Println("[2] Le métal de la mine")
+		fmt.Println("[3] Fabriquer une épée en bois")
+		fmt.Println("[4] Fabriquer une épée en métal")
+		fmt.Println("[5] Retourner au village")
 
 		var choix int
 		fmt.Scan(&choix)

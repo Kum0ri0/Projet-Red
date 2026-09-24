@@ -4,10 +4,11 @@ import "fmt"
 
 func Foret(inv *Inventory) {
 	for {
-		fmt.Println("FORET DE MARCHANG")
-		fmt.Println("1. Récolter du bois")
-		fmt.Println("2. Explorer")
-		fmt.Println("3. Retourner au village")
+		fmt.Println("===== FORET DE MARCHANG =====")
+		fmt.Printf("")
+		fmt.Println("[1] Récolter du bois")
+		fmt.Println("[2] Explorer")
+		fmt.Println("[3] Retourner au village")
 
 		var choix int
 		fmt.Scan(&choix)

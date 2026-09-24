@@ -6,10 +6,11 @@ import (
 
 func Prairies(inv *Inventory) {
 	for {
-		fmt.Println("Vous êtes dans les prairies.")
-		fmt.Println("1. Récolter des matériaux")
-		fmt.Println("2. Explorer")
-		fmt.Println("3. Retourner au village")
+		fmt.Println("==== Vous êtes dans les prairies. ====")
+		fmt.Printf("")
+		fmt.Println("[1] Récolter des matériaux")
+		fmt.Println("[2] Explorer")
+		fmt.Println("[3] Retourner au village")
 
 		var choix int
 		fmt.Scan(&choix)

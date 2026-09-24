@@ -101,9 +101,10 @@ func menuPrincipal(joueur *Player) {
 		fmt.Println("[1] Aller au village")
 		fmt.Println("[2] Partir à l'aventure (combats)")
 		fmt.Println("[3] Voir mon personnage")
-		fmt.Println("[4] Quitter le jeu")
+		fmt.Println("[4] Utiliser un objet")
+		fmt.Println("[5] Quitter le jeu")
 
-		switch lireChoix(1, 4) {
+		switch lireChoix(1, 5) {
 		case 1:
 			clearScreen()
 			// Le village utilise l'inventaire du joueur : ce qui est récolté
@@ -124,8 +125,42 @@ func menuPrincipal(joueur *Player) {
 			joueur.Inventory.Display()
 			attendreEntree()
 		case 4:
+			menuObjets(joueur)
+		case 5:
 			return
 		}
+	}
+}
+
+// menuObjets permet d'utiliser les objets de l'inventaire hors combat.
+func menuObjets(joueur *Player) {
+	for {
+		clearScreen()
+		fmt.Println("╔══════════════════════════════╗")
+		fmt.Println("║        UTILISER OBJET        ║")
+		fmt.Println("╚══════════════════════════════╝")
+		fmt.Printf("%s %d/%d PV\n", pvBar(joueur.HP, joueur.MaxHP), joueur.HP, joueur.MaxHP)
+		fmt.Println()
+
+		if joueur.Inventory.Size() == 0 {
+			fmt.Println("Ton inventaire est vide...")
+			attendreEntree()
+			return
+		}
+
+		for i, objet := range joueur.Inventory.Items {
+			fmt.Printf("[%d] %s - %s\n", i+1, objet.Name, objet.Description)
+		}
+		fmt.Println("[0] Retour")
+
+		choix := lireChoix(0, joueur.Inventory.Size())
+		if choix == 0 {
+			return
+		}
+
+		fmt.Println()
+		joueur.Inventory.UseItem(choix-1, joueur)
+		attendreEntree()
 	}
 }
 
