@@ -7,12 +7,14 @@ type Item struct {
 	Type        string
 	Description string
 	Value       int
+	Spell		Spell
 }
 
 const (
 	TypeWeapon   = "Arme"
 	TypePotion   = "Potion"
 	TypeResource = "Ressource"
+	TypeBook = "Livre"
 )
 
 // =========================
@@ -81,6 +83,50 @@ var PoisonPotion = Item{
 	Type:        TypePotion,
 	Description: "Fait perdre 30 PV.",
 	Value:       30,
+}
+
+// Ajout de livre pour les sorts 
+// =========================
+// books
+// =========================
+var LivreFireball = Item{
+    Name: "Grimoire : Fireball",
+    Type: TypeBook,
+    Spell: Fireball,
+	Value: 30,
+}
+
+var LivreStorm = Item{
+    Name: "Grimoire : Tempète",
+    Type: TypeBook,
+    Spell: Storm,
+}
+
+var LivreDivinelight = Item{
+    Name: "Grimoire : Lumière Divine",
+    Type: TypeBook,
+    Spell: Divinelight,
+}
+
+var LivrewaterBlade = Item{
+    Name: "Grimoire : lame d'eau",
+    Type: TypeBook,
+    Spell: waterBlade,
+	Value: 40,
+}
+
+var LivreDragonBreath = Item{
+    Name: "Grimoire : Souffle du Dragon",
+    Type: TypeBook,
+    Spell: DragonBreath,
+}
+
+
+
+var LivreBlizzard = Item{
+    Name: "Grimoire : blizarre",
+    Type: TypeBook,
+    Spell: Blizzard,
 }
 
 // =========================

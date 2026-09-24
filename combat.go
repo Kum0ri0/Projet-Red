@@ -169,15 +169,15 @@ func useInventory(p *Player) bool {
 		fmt.Println("Ton inventaire est vide ..")
 		return false
 	}
- 
+
 	for i, r := range p.Inventory.Items {
 		fmt.Printf("[%d] %s \n", i+1, r.Name)
 	}
 	fmt.Println("[0] Retour")
- 
+
 	var choix int
 	fmt.Scanln(&choix)
- 
+
 	if choix == 0 {
 		return false
 	}
@@ -185,29 +185,41 @@ func useInventory(p *Player) bool {
 		fmt.Println("Ce choix n'existe pas")
 		return false
 	}
- 
+
 	item := p.Inventory.Items[choix-1]
- 
+
+	// Les livres apprennent un sort au joueur.
+	if item.Type == TypeBook {
+		if !p.LearnSpell(item.Spell) {
+			fmt.Println("Tu connais déjà", item.Spell.Name, "!")
+			return false
+		}
+
+		p.Inventory.RemoveItem(choix - 1)
+		fmt.Println("📖 Tu lis", item.Name, "et apprends", item.Spell.Name, "(", item.Spell.Damage, "dégâts ) !")
+		return true
+	}
+
 	// On applique l'effet selon l'objet choisi.
 	switch item.Name {
 	case HealingPotion.Name:
 		p.Heal(item.Value)
 		fmt.Println("Tu utilises", item.Name, "et récupères", item.Value, "PV")
- 
+
 	case PoisonPotion.Name:
 		p.TakeDamage(item.Value)
 		fmt.Println("Tu utilises", item.Name, "et perds", item.Value, "PV")
- 
+
 	default:
 		fmt.Println(item.Name, "ne peut pas être utilisé en combat")
 		return false
 	}
- 
+
 	// L'objet est consommé.
 	p.Inventory.RemoveItem(choix - 1)
- 
+
 	fmt.Println(p.Name, ":", p.HP, "/", p.MaxHP, "pv")
- 
+
 	return true
 }
 

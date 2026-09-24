@@ -34,7 +34,7 @@ type Attaque struct {
 	precision int 
 }
 
-
+// ajout de drop de livre 
 
 func initSlime() Monster {
 	return Monster{
@@ -127,6 +127,8 @@ func initMage() Monster {
 		orMax:  17,
 		drops: []Drop{
 			{emoji: "🪄", item: MageStaff, taux: 40, nbrMin: 1, nbrMax: 1},
+			{item: LivreBlizzard, taux: 30, nbrMin: 1, nbrMax: 1},
+			{item: LivreDivinelight, taux: 10, nbrMin: 1, nbrMax: 1},
 		},
 		attaques: []Attaque{
 			{nom: "Boule de feu", degats: 13, precision: 70}, 
@@ -148,6 +150,7 @@ func initOgre() Monster {
 		orMax:  21,
 		drops: []Drop{
 			{emoji: "🪨", item: Hide, taux: 30, nbrMin: 1, nbrMax: 1},
+			{item: LivreStorm, taux: 40, nbrMin: 1, nbrMax: 1},
 		},
 		attaques: []Attaque{
 			{nom: "Coups de massue", degats: 14, precision: 70}, 
@@ -169,6 +172,7 @@ func initDragon() Monster {
 		orMax:  35,
 		drops: []Drop{
 			{emoji: "⚔️", item: DragonSword, taux: 5, nbrMin: 1, nbrMax: 1},
+			{item: LivreDragonBreath, taux: 5, nbrMin: 1, nbrMax: 1},
 		},
 		attaques: []Attaque{
 			{nom: "Lance flamme", degats: 50, precision: 70}, 

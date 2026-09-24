@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 )
-
+// ajout spell book et modif de forme
 func Marchand(joueur *Player, inv *Inventory) {
 	for {
 		fmt.Println("MARCHAND")
@@ -15,10 +15,23 @@ func Marchand(joueur *Player, inv *Inventory) {
 		fmt.Scan(&choix)
 
 		if choix == 1 {
-			fmt.Println("ACHETER")
-			fmt.Println("1. Acheter du bois - 10 pièces")
-			fmt.Println("2. Acheter du métal - 20 pièces")
-			fmt.Println("3. Retour")
+		fmt.Println("===== ACHETER =====")
+		fmt.Println("[1] Acheter du bois - 10 pièces")
+		fmt.Println("[2] Acheter du métal - 20 pièces")
+		fmt.Println("[3] Acheter Grimoire : Lame d'eau - 40 pièces")
+		fmt.Println("[4] Acheter Grimoire : Fireball - 80 pièces")
+		fmt.Println("[5] Retour")
+
+			var achat int
+			fmt.Scan(&achat)
+
+		if choix == 1 {
+			fmt.Println("===== ACHETER =====")
+			fmt.Println("[1] Acheter du bois - 10 pièces")
+			fmt.Println("[2] Acheter du métal - 20 pièces")
+			fmt.Println("[3] Acheter Grimoire : Lame d'eau - 40 pièces")
+			fmt.Println("[4] Acheter Grimoire : Fireball - 80 pièces")
+			fmt.Println("[5] Retour")
 
 			var achat int
 			fmt.Scan(&achat)
@@ -50,8 +63,36 @@ func Marchand(joueur *Player, inv *Inventory) {
 					fmt.Println("Vous n'avez pas assez d'argent.")
 				}
 			}
-		}
 
+			if achat == 3 {
+				if joueur.Gold >= 40 {
+					if inv.IsFull() {
+						fmt.Println("Votre inventaire est plein.")
+					} else {
+						joueur.Gold -= 40
+						inv.AddItem(LivrewaterBlade)
+						fmt.Println("Vous avez acheté le Grimoire : Lame d'eau.")
+					}
+				} else {
+					fmt.Println("Vous n'avez pas assez d'argent.")
+				}
+			}
+
+			if achat == 4 {
+				if joueur.Gold >= 80 {
+					if inv.IsFull() {
+						fmt.Println("Votre inventaire est plein.")
+					} else {
+						joueur.Gold -= 80
+						inv.AddItem(LivreFireball)
+						fmt.Println("Vous avez acheté le Grimoire : Fireball.")
+					}
+				} else {
+					fmt.Println("Vous n'avez pas assez d'argent.")
+				}
+			}
+		}
+	}
 		if choix == 2 {
 			fmt.Println("VENDRE")
 			fmt.Println("1. Vendre du bois - 5 pièces")

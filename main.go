@@ -1,5 +1,197 @@
 package main
 
+import (
+	"fmt"
+	"os"
+	"strconv"
+	"strings"
+	"time"
+)
+
 func main() {
-    Village()
+	clearScreen()
+	afficherTitre()
+
+	joueur := creerPersonnage()
+
+	clearScreen()
+	fmt.Println("Bienvenue,", joueur.Name, "le", joueur.Class, "!")
+	fmt.Println("Ton aventure commence au village de Marchang...")
+	fmt.Println()
+	joueur.Display()
+	attendreEntree()
+
+	menuPrincipal(&joueur)
+
+	clearScreen()
+	fmt.Println("Merci d'avoir joué,", joueur.Name, "! À bientôt 👋")
+}
+
+// =========================
+// ÉCRAN TITRE
+// =========================
+
+func afficherTitre() {
+	fmt.Println("╔══════════════════════════════╗")
+	fmt.Println("║          PROJET RED          ║")
+	fmt.Println("║   Les aventures de Marchang  ║")
+	fmt.Println("╚══════════════════════════════╝")
+	fmt.Println()
+}
+
+// =========================
+// CRÉATION DU PERSONNAGE
+// =========================
+
+func creerPersonnage() Player {
+	var nom string
+	for nom == "" {
+		fmt.Print("Quel est ton nom, aventurier ? ")
+		nom = lireLigne()
+	}
+
+	fmt.Println()
+	fmt.Println("Choisis ta classe :")
+	fmt.Println("[1] Guerrier  (+20 PV max)")
+	fmt.Println("[2] Mage      (connaît Boule de Feu)")
+	fmt.Println("[3] Voleur    (commence avec 30 pièces d'or)")
+
+	classe := lireChoix(1, 3)
+
+	return nouveauPersonnage(nom, classe)
+}
+
+// nouveauPersonnage crée le joueur selon la classe choisie
+// (1 = Guerrier, 2 = Mage, 3 = Voleur). Utilisé par les deux versions du jeu.
+func nouveauPersonnage(nom string, classe int) Player {
+	var joueur Player
+	switch classe {
+	case 1:
+		joueur = CreatePlayer(nom, "Guerrier")
+		joueur.MaxHP += 20
+		joueur.HP = joueur.MaxHP
+	case 2:
+		joueur = CreatePlayer(nom, "Mage")
+		joueur.LearnSpell(Fireball)
+	case 3:
+		joueur = CreatePlayer(nom, "Voleur")
+		joueur.AddGold(30)
+	}
+
+	// Kit de départ commun à toutes les classes.
+	joueur.Inventory.AddItem(HealingPotion)
+	joueur.Inventory.AddItem(HealingPotion)
+	joueur.AddGold(50) // tempo
+	return joueur
+}
+
+// =========================
+// MENU PRINCIPAL
+// =========================
+
+func menuPrincipal(joueur *Player) {
+	for {
+		clearScreen()
+		fmt.Println("╔══════════════════════════════╗")
+		fmt.Println("║        MENU PRINCIPAL        ║")
+		fmt.Println("╚══════════════════════════════╝")
+		fmt.Printf("%s | Niv. %d | %s %d/%d PV | %d or\n",
+			joueur.Name, joueur.Level, pvBar(joueur.HP, joueur.MaxHP), joueur.HP, joueur.MaxHP, joueur.Gold)
+		fmt.Println()
+		fmt.Println("[1] Aller au village")
+		fmt.Println("[2] Partir à l'aventure (combats)")
+		fmt.Println("[3] Voir mon personnage")
+		fmt.Println("[4] Quitter le jeu")
+
+		switch lireChoix(1, 4) {
+		case 1:
+			clearScreen()
+			// Le village utilise l'inventaire du joueur : ce qui est récolté
+			// ou acheté est aussi disponible en combat, et inversement.
+			Village(joueur, &joueur.Inventory)
+		case 2:
+			clearScreen()
+			chooseZone(joueur)
+			if joueur.HP <= 0 {
+				reanimer(joueur)
+			}
+			attendreEntree()
+		case 3:
+			clearScreen()
+			joueur.Display()
+			fmt.Printf("XP : %d / %d\n", joueur.XP, joueur.XPToNextLevel())
+			fmt.Println()
+			joueur.Inventory.Display()
+			attendreEntree()
+		case 4:
+			return
+		}
+	}
+}
+
+// reanimer ramène le joueur au village après une défaite,
+// contre la moitié de son or.
+func reanimer(joueur *Player) {
+	perte := joueur.Gold / 2
+	joueur.RemoveGold(perte)
+	joueur.Heal(joueur.MaxHP / 2)
+
+	fmt.Println()
+	fmt.Println("💫 Le médecin du village t'a retrouvé et soigné...")
+	fmt.Println("Tu perds", perte, "pièces d'or et reviens avec", joueur.HP, "PV.")
+	time.Sleep(1 * time.Second)
+}
+
+// =========================
+// SAISIE CLAVIER
+// =========================
+
+// lireLigne lit une ligne sur l'entrée standard, octet par octet.
+// On n'utilise pas bufio ici : il lirait en avance et "volerait" la saisie
+// des fmt.Scan utilisés dans le reste du jeu.
+func lireLigne() string {
+	var sb strings.Builder
+	buf := make([]byte, 1)
+
+	for {
+		n, err := os.Stdin.Read(buf)
+		if n == 0 || err != nil {
+			// Entrée fermée (Ctrl+Z / Ctrl+D) : on quitte proprement.
+			fmt.Println()
+			fmt.Println("Au revoir !")
+			os.Exit(0)
+		}
+		if buf[0] == '\n' {
+			break
+		}
+		sb.WriteByte(buf[0])
+	}
+
+	return strings.TrimSpace(sb.String())
+}
+
+// lireChoix demande un nombre entre min et max jusqu'à obtenir une réponse valide.
+func lireChoix(min, max int) int {
+	for {
+		fmt.Print("> ")
+		ligne := lireLigne()
+
+		// Ligne vide : reste d'un fmt.Scan précédent, on redemande sans message.
+		if ligne == "" {
+			continue
+		}
+
+		choix, err := strconv.Atoi(ligne)
+		if err == nil && choix >= min && choix <= max {
+			return choix
+		}
+
+		fmt.Printf("Choix invalide, entre un nombre entre %d et %d.\n", min, max)
+	}
+}
+
+func attendreEntree() {
+	fmt.Println()
+	fmt.Print("Appuie sur Entrée pour continuer...")
+	lireLigne()
 }

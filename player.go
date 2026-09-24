@@ -16,7 +16,32 @@ var Fireball = Spell{
 	Name:   "Boule de Feu",
 	Damage: 18,
 }
+// ajout ========================================
+var Storm = Spell{
+	Name:   "tempête",
+	Damage: 20,
+}
 
+var Divinelight = Spell{
+	Name:   "Lumière Divine",
+	Damage: 25,
+}
+
+var waterBlade = Spell{
+	Name:   "Lame d'eau",
+	Damage: 16,
+}
+
+var DragonBreath = Spell{
+	Name:   "Souffle du Dragon",
+	Damage: 80,
+}
+
+var Blizzard = Spell{
+	Name: "Blizzard",
+	Damage: 30,
+}
+// ajout ========================================
 type Player struct {
 	Name      string
 	Class     string
@@ -42,17 +67,19 @@ func CreatePlayer(name string, class string) Player {
 		Spells: []Spell{Punch},
 	}
 }
-
-// SpellBook ajoute Boule de Feu au livre de sorts si elle n'est pas déjà connue.
-func (p *Player) SpellBook() {
+// LearnSpell ajoute un sort au joueur s'il ne le connaît pas déjà.
+// Retourne true si le sort a été appris, false s'il était déjà connu.
+func (p *Player) LearnSpell(s Spell) bool {
 	for _, spell := range p.Spells {
-		if spell.Name == Fireball.Name {
-			return
+		if spell.Name == s.Name {
+			return false
 		}
 	}
 
-	p.Spells = append(p.Spells, Fireball)
+	p.Spells = append(p.Spells, s)
+	return true
 }
+
 
 // Display affiche les informations du joueur.
 func (p Player) Display() {
