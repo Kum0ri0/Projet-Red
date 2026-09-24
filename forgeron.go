@@ -22,6 +22,7 @@ func Forgeron(inv *Inventory) {
 				}
 
 				if inv.AddItem(WoodenSword) {
+					epeeBoisQuete++
 					fmt.Println("Vous avez fabriqué une épée en bois.")
 				}
 			} else {
@@ -41,6 +42,7 @@ func Forgeron(inv *Inventory) {
 				supprimerItem(inv, "Bois")
 
 				if inv.AddItem(MetalSword) {
+					epeeMetalQuete++
 					fmt.Println("Vous avez fabriqué une épée en métal.")
 				}
 			} else {

@@ -13,14 +13,17 @@ func Mine(inv *Inventory) {
 		fmt.Scan(&choix)
 
 		if choix == 1 {
+			recolte := 0
 			for i := 0; i < 2; i++ {
 				if !inv.AddItem(Metal) {
 					fmt.Println("Votre inventaire est plein.")
 					break
 				}
+				recolte++
+				metalQuete++
 			}
 
-			fmt.Println("Vous avez récolté 2 métaux.")
+			fmt.Println("Vous avez récolté", recolte, "métaux.")
 		}
 
 		if choix == 2 {

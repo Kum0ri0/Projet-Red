@@ -14,14 +14,17 @@ func Foret(inv *Inventory) {
 		fmt.Scan(&choix)
 
 		if choix == 1 {
+			recolte := 0
 			for i := 0; i < 3; i++ {
 				if !inv.AddItem(Wood) {
 					fmt.Println("Votre inventaire est plein.")
 					break
 				}
+				recolte++
+				boisQuete++
 			}
 
-			fmt.Println("Vous avez récolté 3 bois.")
+			fmt.Println("Vous avez récolté", recolte, "bois.")
 		}
 
 		if choix == 2 {
