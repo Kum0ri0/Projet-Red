@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"unicode/utf8"
 )
 
 func main() {
@@ -92,17 +93,14 @@ func nouveauPersonnage(nom string, classe int) Player {
 func menuPrincipal(joueur *Player) {
 	for {
 		clearScreen()
-		fmt.Println("╔══════════════════════════════╗")
-		fmt.Println("║        MENU PRINCIPAL        ║")
-		fmt.Println("╚══════════════════════════════╝")
-		fmt.Printf("%s | Niv. %d | %s %d/%d PV | %d or\n",
-			joueur.Name, joueur.Level, pvBar(joueur.HP, joueur.MaxHP), joueur.HP, joueur.MaxHP, joueur.Gold)
+		afficherFicheJoueur(joueur)
 		fmt.Println()
-		fmt.Println("[1] Aller au village")
-		fmt.Println("[2] Partir à l'aventure (combats)")
-		fmt.Println("[3] Voir mon personnage")
-		fmt.Println("[4] Utiliser un objet")
-		fmt.Println("[5] Quitter le jeu")
+		fmt.Printf("  [1] %-13s %s\n", "Village", "Récolter, forger, acheter")
+		fmt.Printf("  [2] %-13s %s\n", "Aventure", "Partir combattre des monstres")
+		fmt.Printf("  [3] %-13s %s\n", "Personnage", "Voir mes stats et mon sac")
+		fmt.Printf("  [4] %-13s %s\n", "Objets", "Boire une potion")
+		fmt.Printf("  [5] %s\n", "Quitter")
+		fmt.Println()
 
 		switch lireChoix(1, 5) {
 		case 1:
@@ -130,6 +128,60 @@ func menuPrincipal(joueur *Player) {
 			return
 		}
 	}
+}
+
+// largeurFiche est la largeur intérieure du cadre du menu principal.
+const largeurFiche = 46
+
+// afficherFicheJoueur affiche le cadre du menu principal : titre, stats du joueur
+// et prochaine zone à débloquer.
+func afficherFicheJoueur(joueur *Player) {
+	bord := strings.Repeat("═", largeurFiche)
+
+	fmt.Println("╔" + bord + "╗")
+	ligneFiche(centrer("PROJET  RED"))
+	ligneFiche(centrer("Le village de Marchang"))
+	fmt.Println("╠" + bord + "╣")
+	ligneFiche(deuxCotes("  "+joueur.Name+" le "+joueur.Class, fmt.Sprintf("Niveau %d  ", joueur.Level)))
+	ligneFiche("")
+	ligneFiche(fmt.Sprintf("  PV   %s   %3d / %d", pvBar(joueur.HP, joueur.MaxHP), joueur.HP, joueur.MaxHP))
+	ligneFiche(fmt.Sprintf("  XP   %s   %3d / %d", pvBar(joueur.XP, joueur.XPToNextLevel()), joueur.XP, joueur.XPToNextLevel()))
+	ligneFiche(deuxCotes(fmt.Sprintf("  Or   %d pièces", joueur.Gold), fmt.Sprintf("Sac  %2d / %d  ", joueur.Inventory.Size(), MaxInventorySize)))
+	fmt.Println("╚" + bord + "╝")
+	fmt.Println("  " + prochainObjectif(joueur))
+}
+
+// prochainObjectif indique la prochaine zone que le joueur peut débloquer.
+func prochainObjectif(joueur *Player) string {
+	for _, z := range allZones() {
+		if z.niveauMin > joueur.Level {
+			return fmt.Sprintf("→ Prochaine zone : %s (niveau %d)", z.nom, z.niveauMin)
+		}
+	}
+	return "→ Toutes les zones sont débloquées !"
+}
+
+// ligneFiche affiche une ligne du cadre, complétée par des espaces.
+func ligneFiche(texte string) {
+	fmt.Printf("║%-*s║\n", largeurFiche, texte)
+}
+
+// centrer place le texte au milieu du cadre.
+func centrer(texte string) string {
+	marge := (largeurFiche - utf8.RuneCountInString(texte)) / 2
+	if marge < 0 {
+		marge = 0
+	}
+	return strings.Repeat(" ", marge) + texte
+}
+
+// deuxCotes place un texte à gauche et un autre à droite du cadre.
+func deuxCotes(gauche, droite string) string {
+	espace := largeurFiche - utf8.RuneCountInString(gauche) - utf8.RuneCountInString(droite)
+	if espace < 1 {
+		espace = 1
+	}
+	return gauche + strings.Repeat(" ", espace) + droite
 }
 
 // menuObjets permet d'utiliser les objets de l'inventaire hors combat.
